@@ -1,9 +1,14 @@
-output "dev_instance_public_ip" {
-  description = "Public IP address of the EC2 instance"
-  value       = module.ec2_dev.public_ips
+output "master_public_ips" {
+  value       = module.ec2_cluster.master_public_ips
+  description = "Public IPs of master nodes"
 }
 
-# output "eip" {
-#   description = "Public IP address of the EC2 instance"
-#   value       = module.ec2_dev.elastic_ip
-# }
+output "worker_public_ips" {
+  value       = module.ec2_cluster.worker_public_ips
+  description = "Public IPs of worker nodes"
+}
+
+output "vpc_id" {
+  value       = module.vpc.vpc_id
+  description = "VPC ID"
+}
