@@ -34,13 +34,13 @@ variable "worker_count" {
 variable "master_instance_type" {
   description = "Instance type for master nodes"
   type        = string
-  default     = "t3.medium"
+  default     = "t2.medium"
 }
 
 variable "worker_instance_type" {
   description = "Instance type for worker nodes"
   type        = string
-  default     = "t3.small"
+  default     = "t2.small"
 }
 
 variable "master_user_data" {

@@ -7,7 +7,7 @@ variable "master_count" {
 variable "worker_count" {
   description = "Number of worker nodes"
   type        = number
-  default     = 1
+  default     = 0
 }
 
 variable "master_instance_type" {
@@ -19,5 +19,5 @@ variable "master_instance_type" {
 variable "worker_instance_type" {
   description = "EC2 type for workers"
   type        = string
-  default     = "t2.small"
+  default     = "t2.micro"
 }
