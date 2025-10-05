@@ -202,7 +202,7 @@ resource "aws_instance" "masters" {
     market_type = "spot"
 
     spot_options {
-      max_price          = "0.005"
+      max_price          = "0.02"
       spot_instance_type = "one-time"               # or "persistent" if you want auto-replacement
     }
   }

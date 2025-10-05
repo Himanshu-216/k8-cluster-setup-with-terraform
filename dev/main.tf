@@ -31,10 +31,10 @@ module "ec2_cluster" {
   # Master nodes
   master_count         = var.master_count
   master_instance_type = var.master_instance_type
-  master_user_data     = file("/home/himanshu/terraform-basic/modules/scripts/master.sh")
+  master_user_data     = file("${path.root}/../modules/scripts/master.sh")
 
   # Worker nodes
   worker_count         = var.worker_count
   worker_instance_type = var.worker_instance_type
-  worker_user_data     = file("/home/himanshu/terraform-basic/modules/scripts/worker.sh")
+  worker_user_data     = file("${path.root}/../modules/scripts/worker.sh")
 }
