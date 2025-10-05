@@ -86,18 +86,26 @@ mkdir -p /home/ubuntu/.kube
 sudo cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
 sudo chown ubuntu:ubuntu /home/ubuntu/.kube/config
 
+echo "Waiting for Kubernetes API to be ready..."
+for i in {1..30}; do
+  if kubectl --kubeconfig=/home/ubuntu/.kube/config get nodes >/dev/null 2>&1; then
+    echo "Kubernetes API is ready"
+    break
+  fi
+  echo "API not ready yet, retrying in 5s..."
+  sleep 5
+done
+
+echo "Applying Weave Net CNI"
+kubectl --kubeconfig=/home/ubuntu/.kube/config apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
 sudo systemctl restart kubelet
 
-sleep 15
-
-kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
-
 echo "Untainting control-plane node so workloads can run on it..."
-kubectl taint nodes --all node-role.kubernetes.io/control-plane- || true
-kubectl taint nodes --all node-role.kubernetes.io/master- || true
+kubectl --kubeconfig=/home/ubuntu/.kube/config taint nodes --all node-role.kubernetes.io/control-plane- || true
 
-echo "Installing Flux image automation controllers..."
-flux install --components-extra=image-reflector-controller,image-automation-controller
+
+wget https://github.com/derailed/k9s/releases/download/v0.32.5/k9s_linux_amd64.deb
 
 # flux bootstrap github \
 #   --components-extra=image-reflector-controller,image-automation-controller \

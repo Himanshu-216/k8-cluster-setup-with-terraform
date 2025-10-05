@@ -55,6 +55,14 @@ resource "aws_security_group" "master_sg" {
   }
 
   ingress {
+    description = "port 80 for app"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Restrict in prod!
+  }
+
+  ingress {
     description = "etcd client communication"
     from_port   = 2379
     to_port     = 2380
@@ -188,6 +196,16 @@ resource "aws_instance" "masters" {
   tags = { Name = "${var.name}-master-${count.index}" }
 
   user_data = var.master_user_data
+
+  # Spot instance configuration
+  instance_market_options {
+    market_type = "spot"
+
+    spot_options {
+      max_price          = "0.005"
+      spot_instance_type = "one-time"               # or "persistent" if you want auto-replacement
+    }
+  }
 }
 
 # Worker EC2 Instances
